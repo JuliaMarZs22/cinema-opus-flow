@@ -25,3 +25,16 @@
 - [x] Redesenhar dashboard, páginas operacionais, CRM, projeto, estoque e fluxos
 - [x] Adicionar command palette, menus contextuais e estados de interface
 - [x] Validar todas as rotas em desktop, tablet e mobile
+
+## Plataforma integrada de gestão
+
+- [ ] Corrigir estruturalmente o Kanban comercial e validar todas as colunas e cards
+- [ ] Consolidar design system global, escala tipográfica e estados compartilhados
+- [ ] Evoluir shell global com sidebar expandida/recolhida, perfil e responsividade
+- [ ] Ativar Lovable Cloud e implementar organizações, autenticação e usuários
+- [ ] Implementar RBAC centralizado e autorização no servidor
+- [ ] Modelar CRM, clientes, vendas, produtos, serviços e estoque integrados
+- [ ] Modelar projetos, equipes, agenda e checklists integrados
+- [ ] Implementar Workflow Builder e Workflow Engine com execução persistente
+- [ ] Implementar auditoria, notificações e reprocessamento
+- [ ] Validar segurança, acessibilidade, performance e fluxos ponta a ponta
