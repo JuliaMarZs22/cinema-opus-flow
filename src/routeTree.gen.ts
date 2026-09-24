@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AreaClienteRouteImport } from './routes/area-cliente'
 import { Route as ChecklistRouteImport } from './routes/checklist'
 import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as ClientesRouteImport } from './routes/clientes'
@@ -30,6 +31,11 @@ import { Route as VendaGanhaRouteImport } from './routes/venda-ganha'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AreaClienteRoute = AreaClienteRouteImport.update({
+  id: '/area-cliente',
+  path: '/area-cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChecklistRoute = ChecklistRouteImport.update({
@@ -115,6 +121,7 @@ const VendaGanhaRoute = VendaGanhaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/area-cliente': typeof AreaClienteRoute
   '/checklist': typeof ChecklistRoute
   '/cliente': typeof ClienteRoute
   '/clientes': typeof ClientesRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/area-cliente': typeof AreaClienteRoute
   '/checklist': typeof ChecklistRoute
   '/cliente': typeof ClienteRoute
   '/clientes': typeof ClientesRoute
@@ -154,6 +162,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/area-cliente': typeof AreaClienteRoute
   '/checklist': typeof ChecklistRoute
   '/cliente': typeof ClienteRoute
   '/clientes': typeof ClientesRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/area-cliente'
     | '/checklist'
     | '/cliente'
     | '/clientes'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/area-cliente'
     | '/checklist'
     | '/cliente'
     | '/clientes'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/area-cliente'
     | '/checklist'
     | '/cliente'
     | '/clientes'
@@ -233,6 +245,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AreaClienteRoute: typeof AreaClienteRoute
   ChecklistRoute: typeof ChecklistRoute
   ClienteRoute: typeof ClienteRoute
   ClientesRoute: typeof ClientesRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/area-cliente': {
+      id: '/area-cliente'
+      path: '/area-cliente'
+      fullPath: '/area-cliente'
+      preLoaderRoute: typeof AreaClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checklist': {
@@ -377,6 +397,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AreaClienteRoute: AreaClienteRoute,
   ChecklistRoute: ChecklistRoute,
   ClienteRoute: ClienteRoute,
   ClientesRoute: ClientesRoute,
