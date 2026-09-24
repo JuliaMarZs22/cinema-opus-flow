@@ -24,4 +24,4 @@
 - [x] Implementar temas Light, Dark e System com Helvetica Neue
 - [x] Redesenhar dashboard, páginas operacionais, CRM, projeto, estoque e fluxos
 - [x] Adicionar command palette, menus contextuais e estados de interface
-- [ ] Validar todas as rotas em desktop, tablet e mobile
+- [x] Validar todas as rotas em desktop, tablet e mobile
