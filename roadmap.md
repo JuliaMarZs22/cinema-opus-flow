@@ -28,7 +28,7 @@
 
 ## Plataforma integrada de gestão
 
-- [ ] Corrigir estruturalmente o Kanban comercial e validar todas as colunas e cards
+- [x] Corrigir estruturalmente o Kanban comercial e validar todas as colunas e cards
 - [ ] Consolidar design system global, escala tipográfica e estados compartilhados
 - [ ] Evoluir shell global com sidebar expandida/recolhida, perfil e responsividade
 - [ ] Ativar Lovable Cloud e implementar organizações, autenticação e usuários
