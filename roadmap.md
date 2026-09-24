@@ -11,3 +11,8 @@
 - [x] Animações e gradientes discretos no painel do cliente
 - [x] Matriz visual de permissões por função
 - [x] Metadados e validação responsiva
+
+- [x] Logo oficial aplicada em todo o ecossistema e favicon
+- [x] Modos claro e escuro
+- [x] Refinamento glass, gradientes e design system global
+- [x] Abas interativas e revisão final das rotas

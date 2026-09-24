@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/arte-em-cinema-logo.png.asset.json";
 
 export function Brand({ compact = false, className }: { compact?: boolean; className?: string }) {
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      <span className="brand-mark" aria-hidden="true"><i /><i /><i /></span>
-      {!compact && <span className="leading-none"><b className="block text-[11px] font-semibold tracking-[0.18em]">ARTE EM CINEMA</b><span className="mt-1 block text-[9px] font-medium tracking-[0.38em] text-muted-foreground">OPERATING SYSTEM</span></span>}
+    <div className={cn("brand flex items-center", compact && "brand-compact", className)}>
+      <img src={logoAsset.url} alt="Arte em Cinema" width={185} height={118} />
+      {!compact && <span>OS</span>}
     </div>
   );
 }
