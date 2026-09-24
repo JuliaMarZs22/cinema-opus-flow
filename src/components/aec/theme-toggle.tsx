@@ -1,24 +1,31 @@
-import { Moon, Sun } from "lucide-react";
+import { Check, Laptop, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
+type ThemeMode = "light" | "dark" | "system";
+
 export function ThemeToggle({ className }: { className?: string }) {
-  const [dark, setDark] = useState(false);
+  const [mode, setMode] = useState<ThemeMode>("system");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
+    const saved = window.localStorage.getItem("aec-theme");
+    setMode(saved === "light" || saved === "dark" ? saved : "system");
   }, []);
 
-  const toggleTheme = () => {
-    const next = !dark;
-    document.documentElement.classList.toggle("dark", next);
-    window.localStorage.setItem("aec-theme", next ? "dark" : "light");
-    setDark(next);
+  const choose = (next: ThemeMode) => {
+    const dark = next === "dark" || (next === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.classList.toggle("dark", dark);
+    window.localStorage.setItem("aec-theme", next);
+    setMode(next);
+    setOpen(false);
   };
 
+  const Icon = mode === "light" ? Sun : mode === "dark" ? Moon : Laptop;
   return (
-    <Button className={className} variant="outline" size="icon" aria-label={dark ? "Ativar modo claro" : "Ativar modo escuro"} title={dark ? "Modo claro" : "Modo escuro"} onClick={toggleTheme}>
-      {dark ? <Sun /> : <Moon />}
-    </Button>
+    <div className="theme-control">
+      <Button className={className} variant="outline" size="icon" aria-label="Escolher aparência" title="Aparência" aria-expanded={open} onClick={() => setOpen((value) => !value)}><Icon /></Button>
+      {open&&<div className="theme-menu" role="menu">{([{value:"light",label:"Claro",icon:Sun},{value:"dark",label:"Escuro",icon:Moon},{value:"system",label:"Sistema",icon:Laptop}] as const).map((item)=><button key={item.value} type="button" role="menuitem" onClick={()=>choose(item.value)}><item.icon/><span>{item.label}</span>{mode===item.value&&<Check/>}</button>)}</div>}
+    </div>
   );
 }
