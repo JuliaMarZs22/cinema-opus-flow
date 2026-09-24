@@ -16,3 +16,12 @@
 - [x] Modos claro e escuro
 - [x] Refinamento glass, gradientes e design system global
 - [x] Abas interativas e revisão final das rotas
+
+## Redesign Obsidian Cinema OS
+
+- [ ] Substituir a identidade visual e remover a logo gráfica da interface
+- [ ] Reconstruir navegação compacta desktop e navegação nativa mobile
+- [ ] Implementar temas Light, Dark e System com Helvetica Neue
+- [ ] Redesenhar dashboard, páginas operacionais, CRM, projeto, estoque e fluxos
+- [ ] Adicionar command palette, menus contextuais e estados de interface
+- [ ] Validar todas as rotas em desktop, tablet e mobile
