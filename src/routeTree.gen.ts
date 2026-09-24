@@ -10,33 +10,245 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChecklistRouteImport } from './routes/checklist'
+import { Route as ClienteRouteImport } from './routes/cliente'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as ComprasRouteImport } from './routes/compras'
+import { Route as EquipamentoRouteImport } from './routes/equipamento'
+import { Route as EstoqueRouteImport } from './routes/estoque'
+import { Route as FinanceiroRouteImport } from './routes/financeiro'
+import { Route as FluxosRouteImport } from './routes/fluxos'
+import { Route as LeadsRouteImport } from './routes/leads'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OportunidadeRouteImport } from './routes/oportunidade'
+import { Route as OrdensServicoRouteImport } from './routes/ordens-servico'
+import { Route as PipelineRouteImport } from './routes/pipeline'
+import { Route as ProjetoRouteImport } from './routes/projeto'
+import { Route as UsuariosRouteImport } from './routes/usuarios'
+import { Route as VendaGanhaRouteImport } from './routes/venda-ganha'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChecklistRoute = ChecklistRouteImport.update({
+  id: '/checklist',
+  path: '/checklist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteRoute = ClienteRouteImport.update({
+  id: '/cliente',
+  path: '/cliente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComprasRoute = ComprasRouteImport.update({
+  id: '/compras',
+  path: '/compras',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipamentoRoute = EquipamentoRouteImport.update({
+  id: '/equipamento',
+  path: '/equipamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstoqueRoute = EstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanceiroRoute = FinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FluxosRoute = FluxosRouteImport.update({
+  id: '/fluxos',
+  path: '/fluxos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeadsRoute = LeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OportunidadeRoute = OportunidadeRouteImport.update({
+  id: '/oportunidade',
+  path: '/oportunidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdensServicoRoute = OrdensServicoRouteImport.update({
+  id: '/ordens-servico',
+  path: '/ordens-servico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PipelineRoute = PipelineRouteImport.update({
+  id: '/pipeline',
+  path: '/pipeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjetoRoute = ProjetoRouteImport.update({
+  id: '/projeto',
+  path: '/projeto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsuariosRoute = UsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendaGanhaRoute = VendaGanhaRouteImport.update({
+  id: '/venda-ganha',
+  path: '/venda-ganha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checklist': typeof ChecklistRoute
+  '/cliente': typeof ClienteRoute
+  '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
+  '/equipamento': typeof EquipamentoRoute
+  '/estoque': typeof EstoqueRoute
+  '/financeiro': typeof FinanceiroRoute
+  '/fluxos': typeof FluxosRoute
+  '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
+  '/oportunidade': typeof OportunidadeRoute
+  '/ordens-servico': typeof OrdensServicoRoute
+  '/pipeline': typeof PipelineRoute
+  '/projeto': typeof ProjetoRoute
+  '/usuarios': typeof UsuariosRoute
+  '/venda-ganha': typeof VendaGanhaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checklist': typeof ChecklistRoute
+  '/cliente': typeof ClienteRoute
+  '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
+  '/equipamento': typeof EquipamentoRoute
+  '/estoque': typeof EstoqueRoute
+  '/financeiro': typeof FinanceiroRoute
+  '/fluxos': typeof FluxosRoute
+  '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
+  '/oportunidade': typeof OportunidadeRoute
+  '/ordens-servico': typeof OrdensServicoRoute
+  '/pipeline': typeof PipelineRoute
+  '/projeto': typeof ProjetoRoute
+  '/usuarios': typeof UsuariosRoute
+  '/venda-ganha': typeof VendaGanhaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/checklist': typeof ChecklistRoute
+  '/cliente': typeof ClienteRoute
+  '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
+  '/equipamento': typeof EquipamentoRoute
+  '/estoque': typeof EstoqueRoute
+  '/financeiro': typeof FinanceiroRoute
+  '/fluxos': typeof FluxosRoute
+  '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
+  '/oportunidade': typeof OportunidadeRoute
+  '/ordens-servico': typeof OrdensServicoRoute
+  '/pipeline': typeof PipelineRoute
+  '/projeto': typeof ProjetoRoute
+  '/usuarios': typeof UsuariosRoute
+  '/venda-ganha': typeof VendaGanhaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/checklist'
+    | '/cliente'
+    | '/clientes'
+    | '/compras'
+    | '/equipamento'
+    | '/estoque'
+    | '/financeiro'
+    | '/fluxos'
+    | '/leads'
+    | '/login'
+    | '/oportunidade'
+    | '/ordens-servico'
+    | '/pipeline'
+    | '/projeto'
+    | '/usuarios'
+    | '/venda-ganha'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/checklist'
+    | '/cliente'
+    | '/clientes'
+    | '/compras'
+    | '/equipamento'
+    | '/estoque'
+    | '/financeiro'
+    | '/fluxos'
+    | '/leads'
+    | '/login'
+    | '/oportunidade'
+    | '/ordens-servico'
+    | '/pipeline'
+    | '/projeto'
+    | '/usuarios'
+    | '/venda-ganha'
+  id:
+    | '__root__'
+    | '/'
+    | '/checklist'
+    | '/cliente'
+    | '/clientes'
+    | '/compras'
+    | '/equipamento'
+    | '/estoque'
+    | '/financeiro'
+    | '/fluxos'
+    | '/leads'
+    | '/login'
+    | '/oportunidade'
+    | '/ordens-servico'
+    | '/pipeline'
+    | '/projeto'
+    | '/usuarios'
+    | '/venda-ganha'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChecklistRoute: typeof ChecklistRoute
+  ClienteRoute: typeof ClienteRoute
+  ClientesRoute: typeof ClientesRoute
+  ComprasRoute: typeof ComprasRoute
+  EquipamentoRoute: typeof EquipamentoRoute
+  EstoqueRoute: typeof EstoqueRoute
+  FinanceiroRoute: typeof FinanceiroRoute
+  FluxosRoute: typeof FluxosRoute
+  LeadsRoute: typeof LeadsRoute
+  LoginRoute: typeof LoginRoute
+  OportunidadeRoute: typeof OportunidadeRoute
+  OrdensServicoRoute: typeof OrdensServicoRoute
+  PipelineRoute: typeof PipelineRoute
+  ProjetoRoute: typeof ProjetoRoute
+  UsuariosRoute: typeof UsuariosRoute
+  VendaGanhaRoute: typeof VendaGanhaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +260,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checklist': {
+      id: '/checklist'
+      path: '/checklist'
+      fullPath: '/checklist'
+      preLoaderRoute: typeof ChecklistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente': {
+      id: '/cliente'
+      path: '/cliente'
+      fullPath: '/cliente'
+      preLoaderRoute: typeof ClienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compras': {
+      id: '/compras'
+      path: '/compras'
+      fullPath: '/compras'
+      preLoaderRoute: typeof ComprasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipamento': {
+      id: '/equipamento'
+      path: '/equipamento'
+      fullPath: '/equipamento'
+      preLoaderRoute: typeof EquipamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estoque': {
+      id: '/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof EstoqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financeiro': {
+      id: '/financeiro'
+      path: '/financeiro'
+      fullPath: '/financeiro'
+      preLoaderRoute: typeof FinanceiroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fluxos': {
+      id: '/fluxos'
+      path: '/fluxos'
+      fullPath: '/fluxos'
+      preLoaderRoute: typeof FluxosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leads': {
+      id: '/leads'
+      path: '/leads'
+      fullPath: '/leads'
+      preLoaderRoute: typeof LeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oportunidade': {
+      id: '/oportunidade'
+      path: '/oportunidade'
+      fullPath: '/oportunidade'
+      preLoaderRoute: typeof OportunidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ordens-servico': {
+      id: '/ordens-servico'
+      path: '/ordens-servico'
+      fullPath: '/ordens-servico'
+      preLoaderRoute: typeof OrdensServicoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pipeline': {
+      id: '/pipeline'
+      path: '/pipeline'
+      fullPath: '/pipeline'
+      preLoaderRoute: typeof PipelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projeto': {
+      id: '/projeto'
+      path: '/projeto'
+      fullPath: '/projeto'
+      preLoaderRoute: typeof ProjetoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/usuarios': {
+      id: '/usuarios'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/venda-ganha': {
+      id: '/venda-ganha'
+      path: '/venda-ganha'
+      fullPath: '/venda-ganha'
+      preLoaderRoute: typeof VendaGanhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChecklistRoute: ChecklistRoute,
+  ClienteRoute: ClienteRoute,
+  ClientesRoute: ClientesRoute,
+  ComprasRoute: ComprasRoute,
+  EquipamentoRoute: EquipamentoRoute,
+  EstoqueRoute: EstoqueRoute,
+  FinanceiroRoute: FinanceiroRoute,
+  FluxosRoute: FluxosRoute,
+  LeadsRoute: LeadsRoute,
+  LoginRoute: LoginRoute,
+  OportunidadeRoute: OportunidadeRoute,
+  OrdensServicoRoute: OrdensServicoRoute,
+  PipelineRoute: PipelineRoute,
+  ProjetoRoute: ProjetoRoute,
+  UsuariosRoute: UsuariosRoute,
+  VendaGanhaRoute: VendaGanhaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
