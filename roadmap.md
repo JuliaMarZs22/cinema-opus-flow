@@ -19,9 +19,9 @@
 
 ## Redesign Obsidian Cinema OS
 
-- [ ] Substituir a identidade visual e remover a logo gráfica da interface
-- [ ] Reconstruir navegação compacta desktop e navegação nativa mobile
-- [ ] Implementar temas Light, Dark e System com Helvetica Neue
-- [ ] Redesenhar dashboard, páginas operacionais, CRM, projeto, estoque e fluxos
-- [ ] Adicionar command palette, menus contextuais e estados de interface
+- [x] Substituir a identidade visual e remover a logo gráfica da interface
+- [x] Reconstruir navegação compacta desktop e navegação nativa mobile
+- [x] Implementar temas Light, Dark e System com Helvetica Neue
+- [x] Redesenhar dashboard, páginas operacionais, CRM, projeto, estoque e fluxos
+- [x] Adicionar command palette, menus contextuais e estados de interface
 - [ ] Validar todas as rotas em desktop, tablet e mobile
