@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 const groups = [
   { label: "Visão geral", items: [{ to: "/", label: "Dashboard", icon: LayoutDashboard }] },
   { label: "Relacionamento", items: [{ to: "/leads", label: "Leads", icon: ContactRound }, { to: "/pipeline", label: "Pipeline", icon: BriefcaseBusiness }, { to: "/clientes", label: "Clientes", icon: UsersRound }] },
-  { label: "Operação", items: [{ to: "/projetos", label: "Projetos", icon: Command }, { to: "/checklist", label: "Checklists", icon: ClipboardCheck }, { to: "/ordens-servico", label: "Ordens de serviço", icon: FileCheck2 }] },
+  { label: "Operação", items: [{ to: "/projeto", label: "Projetos", icon: Command }, { to: "/checklist", label: "Checklists", icon: ClipboardCheck }, { to: "/ordens-servico", label: "Ordens de serviço", icon: FileCheck2 }] },
   { label: "Recursos", items: [{ to: "/estoque", label: "Estoque", icon: Boxes }, { to: "/compras", label: "Compras", icon: ShoppingCart }, { to: "/financeiro", label: "Financeiro", icon: CircleDollarSign }] },
   { label: "Sistema", items: [{ to: "/fluxos", label: "Fluxos", icon: GitBranch }, { to: "/usuarios", label: "Usuários", icon: Settings2 }] },
 ] as const;
