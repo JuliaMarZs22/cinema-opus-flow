@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { AlertTriangle, ArrowRight, Box, CalendarDays, Check, ChevronRight, CircleDollarSign, Clock3, Download, FileText, Filter, GitBranch, GripVertical, Headphones, ListFilter, LogOut, MessageSquareText, PackageCheck, Plus, Search, Settings2, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, UserPlus, UsersRound, Wrench } from "lucide-react";
 import { AppShell } from "./app-shell";
@@ -46,97 +47,131 @@ function Filters(){return <div className="filters"><button className="filter-pil
 const stages: PipelineStage[]=[{name:"Qualificação",value:"R$ 486 mil",opportunities:[{...leads[0],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:3},{...leads[4],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:3}]},{name:"Visita técnica",value:"R$ 372 mil",opportunities:[{...leads[3],description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:4}]},{name:"Proposta",value:"R$ 574 mil",opportunities:[{...leads[1],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:5},{...leads[2],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:5}]},{name:"Negociação",value:"R$ 298 mil",opportunities:[{...leads[0],name:"Casa Gávea",value:"R$ 298.000",description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:6}]}];
 export function PipelinePage(){return <AppShell eyebrow="CRM · Oportunidades" title="Pipeline comercial" action={<Button><Plus/><span> Nova oportunidade</span></Button>}><div className="pipeline-crm-note"><MessageSquareText/><span>Leads convertidos no <Link to="/crm">CRM</Link> aparecem aqui como oportunidades de venda</span></div><div className="pipeline-toolbar"><Filters/><div className="pipeline-total"><span>Pipeline total</span><b>R$ 1.730.000</b></div></div><KanbanBoard stages={stages}/></AppShell>}
 
-const crmKpis=[
-  {label:"Conversas",value:"128",trend:"↑ 12%"},
-  {label:"Novos leads",value:"47",trend:"↑ 8%"},
-  {label:"Propostas",value:"12",trend:"↑ 20%"},
-  {label:"Fechamentos",value:"8",trend:"↑ 33%",dark:true},
-  {label:"Em negociação",value:"R$ 1,2M",trend:"↑ 18%"},
-];
-const chColor:Record<string,string>={"Instagram":"crm-tag-pink","WhatsApp":"crm-tag-green","Site":"crm-tag-blue","Parceiro":"crm-tag-purple","Indicação":"crm-tag-neutral","Evento":"crm-tag-orange"};
-const crmCols=[
-  {name:"Novo Lead",count:5,value:"R$ 832k",leads:[
-    {id:1,init:"RN",name:"Ricardo Nogueira",msg:"Pode ser quinta à tarde?",ch:["Instagram","Indicação"],val:"R$ 320k",time:"14:22",unread:2},
-    {id:2,init:"CF",name:"Camila Ferreira",msg:"Qual o valor do pacote?",ch:["Instagram"],val:"R$ 96k",time:"Ontem",unread:1},
-    {id:3,init:"BD",name:"Beatriz Dantas",msg:"Obrigada, vou pensar e retorno.",ch:["Site"],val:"R$ 74k",time:"Ter",unread:0},
-  ]},
-  {name:"Em Atendimento",count:4,value:"R$ 538k",leads:[
-    {id:4,init:"MK",name:"Studio MK27",msg:"Pode enviar o portfólio de projetos?",ch:["Parceiro"],val:"R$ 185k",time:"11:02",unread:0},
-    {id:5,init:"ES",name:"Eduardo Salles",msg:"Quando posso ver o showroom?",ch:["Indicação"],val:"R$ 138k",time:"Sex",unread:0},
-    {id:6,init:"JM",name:"João Moreira",msg:"Quero entender melhor as opções.",ch:["WhatsApp"],val:"R$ 214k",time:"Ontem",unread:3},
-  ]},
-  {name:"Proposta Enviada",count:3,value:"R$ 685k",leads:[
-    {id:7,init:"GO",name:"Grupo Oliva",msg:"Confirmado amanhã às 14h na sede.",ch:["Indicação","Evento"],val:"R$ 240k",time:"Seg",unread:0},
-    {id:8,init:"PR",name:"Paulo Ribeiro",msg:"Precisamos revisar o escopo.",ch:["Site"],val:"R$ 178k",time:"Sex",unread:1},
-  ]},
-  {name:"Negociação",count:2,value:"R$ 478k",leads:[
-    {id:9,init:"AR",name:"Andrea Rocha",msg:"Podemos fechar na semana que vem?",ch:["Instagram"],val:"R$ 298k",time:"Ter",unread:0},
-    {id:10,init:"GS",name:"Grupo Salves",msg:"Preciso do contrato revisado.",ch:["Parceiro"],val:"R$ 180k",time:"Seg",unread:0},
-  ]},
-  {name:"Fechados",count:3,value:"R$ 842k",leads:[
-    {id:11,init:"JS",name:"João Silva",msg:"Incrível! Muito obrigado.",ch:["Indicação"],val:"R$ 280k",time:"22 set",unread:0},
-    {id:12,init:"FA",name:"Fernanda Almeida",msg:"Projeto aprovado. ✓",ch:["Indicação"],val:"R$ 194k",time:"18 set",unread:0},
-  ]},
-];
+type DbLead = { id: string; name: string; project_type: string | null; source: string | null; estimated_value: number | null; status: string; updated_at: string; profiles: { initials: string } | null };
+const CRM_STAGES = ["Novo Lead","Em Atendimento","Proposta Enviada","Negociação","Fechados"] as const;
+const chColor: Record<string,string> = {"Instagram":"crm-tag-pink","WhatsApp":"crm-tag-green","Site":"crm-tag-blue","Parceiro":"crm-tag-purple","Indicação":"crm-tag-neutral","Evento":"crm-tag-orange"};
+function initials(name: string){return name.split(" ").filter(Boolean).map(w=>w[0]??'').join("").slice(0,2).toUpperCase()}
+function fmtVal(v: number | null){if(!v)return"–";return v>=1000000?`R$ ${(v/1000000).toFixed(1)}M`:`R$ ${Math.round(v/1000)}k`}
+function relTime(iso: string){const d=Math.floor((Date.now()-new Date(iso).getTime())/86400000);if(d===0)return"Hoje";if(d===1)return"Ontem";if(d<7)return`${d}d atrás`;return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"short"})}
+
 export function CrmPage(){
   const [view,setView]=useState<"kanban"|"lista">("kanban");
   const [q,setQ]=useState("");
-  return <AppShell eyebrow="CRM · Comercial" title="Conversas e leads" action={<Button><Plus/><span> Nova conversa</span></Button>}>
-    <div className="crm-kpis">
-      {crmKpis.map(k=><div className={`crm-kpi${k.dark?" crm-kpi-dark":""}`} key={k.label}>
+  const [leads,setLeads]=useState<DbLead[]|null>(null);
+  const [loadErr,setLoadErr]=useState<string|null>(null);
+
+  useEffect(()=>{
+    supabase
+      .from("leads")
+      .select("id,name,project_type,source,estimated_value,status,updated_at,profiles!responsible_id(initials)")
+      .order("updated_at",{ascending:false})
+      .then(({data,error})=>{
+        if(error){setLoadErr(error.message);}
+        else setLeads((data as DbLead[])||([]));
+      });
+  },[]);
+
+  const kpis = useMemo(()=>{
+    if(!leads) return null;
+    const total = leads.length;
+    const novos = leads.filter(l=>l.status==="Novo Lead").length;
+    const propostas = leads.filter(l=>l.status==="Proposta Enviada").length;
+    const fechados = leads.filter(l=>l.status==="Fechados").length;
+    const negVal = leads.filter(l=>l.status!=="Fechados").reduce((s,l)=>s+(l.estimated_value??0),0);
+    return [
+      {label:"Conversas",value:String(total),trend:"Total de leads"},
+      {label:"Novos leads",value:String(novos),trend:"Aguardando contato"},
+      {label:"Propostas",value:String(propostas),trend:"Propostas ativas"},
+      {label:"Fechamentos",value:String(fechados),trend:"Convertidos",dark:true},
+      {label:"Em negociação",value:fmtVal(negVal),trend:"Valor potencial"},
+    ];
+  },[leads]);
+
+  const cols = useMemo(()=>{
+    if(!leads) return null;
+    const filtered = q ? leads.filter(l=>l.name.toLowerCase().includes(q.toLowerCase())||l.project_type?.toLowerCase().includes(q.toLowerCase())) : leads;
+    return CRM_STAGES.map(stage=>{
+      const stageLeads = filtered.filter(l=>l.status===stage);
+      const total = leads.filter(l=>l.status===stage).reduce((s,l)=>s+(l.estimated_value??0),0);
+      return {name:stage, count:stageLeads.length, value:fmtVal(total), leads:stageLeads};
+    });
+  },[leads,q]);
+
+  const byVendor = useMemo(()=>{
+    if(!leads) return [];
+    const map = new Map<string,{n:string,total:number,prop:number,fech:number}>();
+    leads.forEach(l=>{
+      const key = (l.profiles?.initials)??"?";
+      const r = map.get(key)??{n:key,total:0,prop:0,fech:0};
+      r.total++;
+      if(l.status==="Proposta Enviada")r.prop++;
+      if(l.status==="Fechados")r.fech++;
+      map.set(key,r);
+    });
+    return Array.from(map.values()).map(v=>({...v,conv:v.total?`${Math.round(v.fech/v.total*100)}%`:"0%"}));
+  },[leads]);
+
+  const isLoading = leads===null&&!loadErr;
+
+  return <AppShell eyebrow="CRM · Comercial" title="Conversas e leads" action={<Button><Plus/><span> Novo lead</span></Button>}>
+    {isLoading&&<div className="crm-loading"><div className="auth-spinner"/></div>}
+    {loadErr&&<div className="crm-error"><AlertTriangle/><span>Erro ao carregar leads: {loadErr}</span></div>}
+    {kpis&&<div className="crm-kpis">
+      {kpis.map(k=><div className={`crm-kpi${k.dark?" crm-kpi-dark":""}`} key={k.label}>
         <span>{k.label}</span><b>{k.value}</b><small>{k.trend}</small>
       </div>)}
-    </div>
+    </div>}
     <div className="crm-tb">
       <div className="crm-views">
         <button className={view==="kanban"?"active":""} type="button" onClick={()=>setView("kanban")}>Kanban</button>
         <button className={view==="lista"?"active":""} type="button" onClick={()=>setView("lista")}>Lista</button>
       </div>
-      <div className="crm-search"><Search/><input placeholder="Buscar lead ou conversa..." value={q} onChange={e=>setQ(e.target.value)}/></div>
+      <div className="crm-search"><Search/><input placeholder="Buscar lead ou projeto..." value={q} onChange={e=>setQ(e.target.value)}/></div>
       <button className="filter-pill"><ListFilter/> Todos os vendedores</button>
-      <button className="filter-pill">Out · 2026</button>
       <Button variant="outline" size="sm" asChild><Link to="/pipeline"><GitBranch/><span> Pipeline</span></Link></Button>
     </div>
-    <div className="crm-board">
-      {crmCols.map(col=>(
+    {cols&&<div className="crm-board">
+      {cols.map(col=>(
         <div className="crm-col" key={col.name}>
           <div className="crm-col-hd">
             <strong>{col.name}</strong>
             <em>{col.count}</em>
             <span>{col.value}</span>
           </div>
-          {col.leads.filter(l=>!q||l.name.toLowerCase().includes(q.toLowerCase())).map(l=>(
+          {col.leads.map(l=>(
             <div className="crm-card" key={l.id}>
               <div className="crm-card-hd">
-                <span className="crm-av">{l.init}</span>
-                <div><b>{l.name}</b><time>{l.time}</time></div>
-                {l.unread>0&&<em className="crm-badge">{l.unread}</em>}
+                <span className="crm-av">{initials(l.name)}</span>
+                <div><b>{l.name}</b><time>{relTime(l.updated_at)}</time></div>
               </div>
-              <p className="crm-card-msg">{l.msg}</p>
+              <p className="crm-card-msg">{l.project_type??l.source??"–"}</p>
               <div className="crm-card-ft">
-                {l.ch.map(c=><span key={c} className={`crm-tag ${chColor[c]??""}`}>{c}</span>)}
-                <strong className="crm-card-val">{l.val}</strong>
+                {l.source&&<span className={`crm-tag ${chColor[l.source]??""}`}>{l.source}</span>}
+                {l.profiles?.initials&&<span className="crm-owner">{l.profiles.initials}</span>}
+                <strong className="crm-card-val">{fmtVal(l.estimated_value)}</strong>
               </div>
             </div>
           ))}
+          {col.leads.length===0&&!q&&<p className="crm-empty">Nenhum lead nesta etapa</p>}
           <button type="button" className="crm-col-add"><Plus/> Adicionar</button>
         </div>
       ))}
-    </div>
+    </div>}
     <div className="crm-summary">
-      <Panel><PanelHead title="Por vendedor" meta="Out 2026"/>
-        <div className="table-wrap"><table className="data-table"><thead><tr><th>Vendedor</th><th>Leads</th><th>Propostas</th><th>Fechados</th><th>Conversão</th></tr></thead><tbody>
-          {[{n:"Marcelo M.",l:8,p:5,f:3,c:"38%"},{n:"Laura M.",l:6,p:3,f:2,c:"33%"},{n:"Rafael L.",l:4,p:2,f:1,c:"25%"},{n:"Carlos A.",l:5,p:2,f:1,c:"20%"}].map(v=><tr key={v.n}><td><b>{v.n}</b></td><td>{v.l}</td><td>{v.p}</td><td><b>{v.f}</b></td><td><Status tone="success">{v.c}</Status></td></tr>)}
+      <Panel><PanelHead title="Por vendedor" meta="Acumulado"/>
+        <div className="table-wrap"><table className="data-table"><thead><tr><th>Vendedor</th><th>Total</th><th>Propostas</th><th>Fechados</th><th>Conversão</th></tr></thead><tbody>
+          {byVendor.map(v=><tr key={v.n}><td><b>{v.n}</b></td><td>{v.total}</td><td>{v.prop}</td><td><b>{v.fech}</b></td><td><Status tone="success">{v.conv}</Status></td></tr>)}
         </tbody></table></div>
       </Panel>
       <Panel><PanelHead title="Atividades recentes"/>
         <div className="crm-acts">
-          {[{t:"Ricardo Nogueira respondeu à mensagem",d:"há 8 min"},{t:"Grupo Oliva confirmou visita técnica",d:"há 42 min"},{t:"Proposta enviada para Paulo Ribeiro",d:"há 2h"},{t:"Andrea Rocha avançou para Negociação",d:"há 4h"},{t:"João Silva convertido em projeto",d:"Ontem"}].map(a=><div className="crm-act" key={a.t}><i/><span>{a.t}</span><small>{a.d}</small></div>)}
+          {leads?.slice(0,5).map(l=><div className="crm-act" key={l.id}><i/><span>{l.name} · {l.status}</span><small>{relTime(l.updated_at)}</small></div>)}
+          {!leads&&<div className="crm-act"><i/><span>Carregando...</span></div>}
         </div>
       </Panel>
-      <Panel><PanelHead title="Próximas ações"/>
+      <Panel><PanelHead title="Pipeline"/>
         <div className="crm-acts">
-          {[{t:"Follow-up Ricardo Nogueira",d:"Hoje · 16:00"},{t:"Reunião Grupo Oliva na sede",d:"Amanhã · 14:00"},{t:"Enviar revisão de proposta Paulo R.",d:"27 out"},{t:"Visita técnica Andrea Rocha",d:"29 out"},{t:"Ligar para Grupo Salves",d:"30 out"}].map(a=><div className="crm-act crm-act-cal" key={a.t}><CalendarDays/><span>{a.t}</span><small>{a.d}</small></div>)}
+          {CRM_STAGES.map(s=>{const c=leads?.filter(l=>l.status===s).length??0;const v=leads?.filter(l=>l.status===s).reduce((a,l)=>a+(l.estimated_value??0),0)??0;return<div className="crm-act crm-act-cal" key={s}><CalendarDays/><span>{s}</span><small>{c} · {fmtVal(v)}</small></div>})}
         </div>
       </Panel>
     </div>
