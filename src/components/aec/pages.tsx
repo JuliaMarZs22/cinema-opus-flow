@@ -46,48 +46,99 @@ function Filters(){return <div className="filters"><button className="filter-pil
 const stages: PipelineStage[]=[{name:"Qualificação",value:"R$ 486 mil",opportunities:[{...leads[0],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:3},{...leads[4],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:3}]},{name:"Visita técnica",value:"R$ 372 mil",opportunities:[{...leads[3],description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:4}]},{name:"Proposta",value:"R$ 574 mil",opportunities:[{...leads[1],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:5},{...leads[2],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:5}]},{name:"Negociação",value:"R$ 298 mil",opportunities:[{...leads[0],name:"Casa Gávea",value:"R$ 298.000",description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:6}]}];
 export function PipelinePage(){return <AppShell eyebrow="CRM · Oportunidades" title="Pipeline comercial" action={<Button><Plus/><span> Nova oportunidade</span></Button>}><div className="pipeline-crm-note"><MessageSquareText/><span>Leads convertidos no <Link to="/crm">CRM</Link> aparecem aqui como oportunidades de venda</span></div><div className="pipeline-toolbar"><Filters/><div className="pipeline-total"><span>Pipeline total</span><b>R$ 1.730.000</b></div></div><KanbanBoard stages={stages}/></AppShell>}
 
-const crmContacts=[
-  {id:1,initials:"RN",name:"Ricardo Nogueira",project:"Private Cinema",value:"R$ 320.000",status:"Qualificado",tone:"dark",lastMsg:"Pode ser quinta-feira à tarde?",time:"14:22",unread:2},
-  {id:2,initials:"MK",name:"Studio MK27",project:"Automação",value:"R$ 185.000",status:"Novo",tone:"neutral",lastMsg:"Você pode enviar o portfólio de projetos?",time:"Ontem",unread:0},
-  {id:3,initials:"BD",name:"Beatriz Dantas",project:"Áudio & Vídeo",value:"R$ 74.000",status:"Contato",tone:"neutral",lastMsg:"Obrigada! Vou pensar e retorno semana que vem.",time:"Ter",unread:1},
-  {id:4,initials:"GO",name:"Grupo Oliva",project:"Corporativo",value:"R$ 240.000",status:"Visita",tone:"warning",lastMsg:"Confirmado para amanhã às 14h na sede.",time:"Seg",unread:0},
-  {id:5,initials:"ES",name:"Eduardo Salles",project:"Residencial",value:"R$ 138.500",status:"Qualificado",tone:"dark",lastMsg:"Adorei a proposta, quando posso ver o showroom?",time:"Sex",unread:0},
+const crmKpis=[
+  {label:"Conversas",value:"128",trend:"↑ 12%"},
+  {label:"Novos leads",value:"47",trend:"↑ 8%"},
+  {label:"Propostas",value:"12",trend:"↑ 20%"},
+  {label:"Fechamentos",value:"8",trend:"↑ 33%",dark:true},
+  {label:"Em negociação",value:"R$ 1,2M",trend:"↑ 18%"},
 ];
-const crmMsgs:{[k:number]:{from:"me"|"them";text:string;time:string}[]}={
-  1:[{from:"them",text:"Olá Marcelo! Vi o trabalho de vocês no Instagram. Ficou incrível aquele cinema residencial da Granja Viana.",time:"14:18"},{from:"them",text:"Tenho interesse em fazer algo parecido aqui na minha casa em Alphaville.",time:"14:19"},{from:"me",text:"Boa tarde Ricardo! Que bacana, fico feliz! Seria uma sala dedicada ou integrada à área de estar?",time:"14:20"},{from:"them",text:"Sala dedicada. Tenho 40m² disponíveis no subsolo, já separados para isso.",time:"14:21"},{from:"me",text:"Perfeito para um Private Cinema de alto padrão. Posso marcar uma visita técnica essa semana para avaliar o espaço?",time:"14:21"},{from:"them",text:"Pode ser quinta-feira à tarde?",time:"14:22"}],
-  2:[{from:"them",text:"Olá! Vi que vocês fazem automação residencial completa. Temos um escritório de arquitetura e queremos automatizar a sede.",time:"10:30"},{from:"me",text:"Bom dia! Sim, trabalhamos com automação corporativa e residencial. Qual é a metragem e quais sistemas vocês gostariam de integrar?",time:"10:45"},{from:"them",text:"800m² em 3 andares. Iluminação cênica, áudio ambiente, climatização e controle de acesso.",time:"11:02"},{from:"me",text:"Ótimo projeto! Trabalhamos com Control4 e Crestron. Você pode enviar o portfólio de projetos?",time:"11:10"}],
-  3:[{from:"them",text:"Oi! Vi vocês no evento Casa Cor. Quero um sistema de áudio para a área gourmet e varanda.",time:"09:15"},{from:"me",text:"Olá Beatriz! Que ótimo ter te encontrado lá. O espaço é coberto? Pretende integrar com outros ambientes?",time:"09:22"},{from:"them",text:"É coberta, cerca de 80m². Quero algo discreto, onde os caixas não apareçam muito.",time:"09:35"},{from:"me",text:"Temos soluções perfeitas — Bowers & Wilkins flush mount, praticamente invisíveis, som incrível. Envio referências!",time:"09:41"},{from:"them",text:"Obrigada! Vou pensar e retorno semana que vem.",time:"09:50"}],
-  4:[{from:"them",text:"Bom dia. Somos o Grupo Oliva, estamos reformando nossa sede e queremos um sistema completo de AV para sala de reuniões e auditório.",time:"08:45"},{from:"me",text:"Bom dia! Seria um prazer. Qual é a capacidade do auditório e das salas de reunião?",time:"09:00"},{from:"them",text:"Auditório para 120 pessoas e 4 salas de reunião entre 8 e 20 pessoas.",time:"09:12"},{from:"me",text:"Projeto robusto! Podemos fazer uma visita para levantamento técnico?",time:"09:18"},{from:"them",text:"Confirmado para amanhã às 14h na sede. Rua Funchal, 418.",time:"09:25"}],
-  5:[{from:"them",text:"Olá Marcelo, fui indicado pelo João Silva. Ele disse que o trabalho de vocês é impressionante.",time:"16:20"},{from:"me",text:"Olá Eduardo! O João é um cliente incrível, o projeto ficou lindo. O que você está pensando para sua casa?",time:"16:35"},{from:"them",text:"Home theater integrado com automação de iluminação e cortinas. Apartamento de 300m² no Itaim.",time:"16:42"},{from:"me",text:"Perfeito para uma solução Control4 integrada. Posso enviar uma proposta personalizada?",time:"16:48"},{from:"them",text:"Adorei a proposta, quando posso ver o showroom?",time:"16:55"}],
-};
-export function CrmChatPage(){
-  const [active,setActive]=useState(0);
-  const [mv,setMv]=useState<"list"|"chat">("list");
-  const c=crmContacts[active]!;
-  const msgs=crmMsgs[c.id]!;
-  return <AppShell eyebrow="CRM · Conversas" title="Mensagens" action={<Button variant="outline" asChild><Link to="/pipeline"><GitBranch/><span> Ver pipeline</span></Link></Button>}>
-    <div className={`crm-chat${mv==="chat"?" crm-mc":""}`}>
-      <div className="crm-list">
-        <div className="crm-search"><Search/><input placeholder="Buscar conversa..."/></div>
-        {crmContacts.map((ct,i)=><button type="button" key={ct.id} className={`crm-contact${i===active?" active":""}`} onClick={()=>{setActive(i);setMv("chat")}}>
-          <span className="crm-av">{ct.initials}</span>
-          <div><div className="crm-ct"><b>{ct.name}</b><small>{ct.time}</small></div>
-          <div className="crm-cb"><span>{ct.lastMsg}</span>{ct.unread>0&&<em>{ct.unread}</em>}</div></div>
-        </button>)}
+const chColor:Record<string,string>={"Instagram":"crm-tag-pink","WhatsApp":"crm-tag-green","Site":"crm-tag-blue","Parceiro":"crm-tag-purple","Indicação":"crm-tag-neutral","Evento":"crm-tag-orange"};
+const crmCols=[
+  {name:"Novo Lead",count:5,value:"R$ 832k",leads:[
+    {id:1,init:"RN",name:"Ricardo Nogueira",msg:"Pode ser quinta à tarde?",ch:["Instagram","Indicação"],val:"R$ 320k",time:"14:22",unread:2},
+    {id:2,init:"CF",name:"Camila Ferreira",msg:"Qual o valor do pacote?",ch:["Instagram"],val:"R$ 96k",time:"Ontem",unread:1},
+    {id:3,init:"BD",name:"Beatriz Dantas",msg:"Obrigada, vou pensar e retorno.",ch:["Site"],val:"R$ 74k",time:"Ter",unread:0},
+  ]},
+  {name:"Em Atendimento",count:4,value:"R$ 538k",leads:[
+    {id:4,init:"MK",name:"Studio MK27",msg:"Pode enviar o portfólio de projetos?",ch:["Parceiro"],val:"R$ 185k",time:"11:02",unread:0},
+    {id:5,init:"ES",name:"Eduardo Salles",msg:"Quando posso ver o showroom?",ch:["Indicação"],val:"R$ 138k",time:"Sex",unread:0},
+    {id:6,init:"JM",name:"João Moreira",msg:"Quero entender melhor as opções.",ch:["WhatsApp"],val:"R$ 214k",time:"Ontem",unread:3},
+  ]},
+  {name:"Proposta Enviada",count:3,value:"R$ 685k",leads:[
+    {id:7,init:"GO",name:"Grupo Oliva",msg:"Confirmado amanhã às 14h na sede.",ch:["Indicação","Evento"],val:"R$ 240k",time:"Seg",unread:0},
+    {id:8,init:"PR",name:"Paulo Ribeiro",msg:"Precisamos revisar o escopo.",ch:["Site"],val:"R$ 178k",time:"Sex",unread:1},
+  ]},
+  {name:"Negociação",count:2,value:"R$ 478k",leads:[
+    {id:9,init:"AR",name:"Andrea Rocha",msg:"Podemos fechar na semana que vem?",ch:["Instagram"],val:"R$ 298k",time:"Ter",unread:0},
+    {id:10,init:"GS",name:"Grupo Salves",msg:"Preciso do contrato revisado.",ch:["Parceiro"],val:"R$ 180k",time:"Seg",unread:0},
+  ]},
+  {name:"Fechados",count:3,value:"R$ 842k",leads:[
+    {id:11,init:"JS",name:"João Silva",msg:"Incrível! Muito obrigado.",ch:["Indicação"],val:"R$ 280k",time:"22 set",unread:0},
+    {id:12,init:"FA",name:"Fernanda Almeida",msg:"Projeto aprovado. ✓",ch:["Indicação"],val:"R$ 194k",time:"18 set",unread:0},
+  ]},
+];
+export function CrmPage(){
+  const [view,setView]=useState<"kanban"|"lista">("kanban");
+  const [q,setQ]=useState("");
+  return <AppShell eyebrow="CRM · Comercial" title="Conversas e leads" action={<Button><Plus/><span> Nova conversa</span></Button>}>
+    <div className="crm-kpis">
+      {crmKpis.map(k=><div className={`crm-kpi${k.dark?" crm-kpi-dark":""}`} key={k.label}>
+        <span>{k.label}</span><b>{k.value}</b><small>{k.trend}</small>
+      </div>)}
+    </div>
+    <div className="crm-tb">
+      <div className="crm-views">
+        <button className={view==="kanban"?"active":""} type="button" onClick={()=>setView("kanban")}>Kanban</button>
+        <button className={view==="lista"?"active":""} type="button" onClick={()=>setView("lista")}>Lista</button>
       </div>
-      <div className="crm-thread">
-        <div className="crm-th">
-          <button type="button" className="crm-back" onClick={()=>setMv("list")}><ChevronRight style={{transform:"rotate(180deg)"}}/></button>
-          <span className="crm-av">{c.initials}</span>
-          <div><b>{c.name}</b><small>{c.project} · {c.value}</small></div>
-          <Status tone={c.tone as "dark"|"warning"|"success"|"neutral"}>{c.status}</Status>
-          <Button size="sm" asChild><Link to="/venda-ganha"><Check/><span> Converter</span></Link></Button>
+      <div className="crm-search"><Search/><input placeholder="Buscar lead ou conversa..." value={q} onChange={e=>setQ(e.target.value)}/></div>
+      <button className="filter-pill"><ListFilter/> Todos os vendedores</button>
+      <button className="filter-pill">Out · 2026</button>
+      <Button variant="outline" size="sm" asChild><Link to="/pipeline"><GitBranch/><span> Pipeline</span></Link></Button>
+    </div>
+    <div className="crm-board">
+      {crmCols.map(col=>(
+        <div className="crm-col" key={col.name}>
+          <div className="crm-col-hd">
+            <strong>{col.name}</strong>
+            <em>{col.count}</em>
+            <span>{col.value}</span>
+          </div>
+          {col.leads.filter(l=>!q||l.name.toLowerCase().includes(q.toLowerCase())).map(l=>(
+            <div className="crm-card" key={l.id}>
+              <div className="crm-card-hd">
+                <span className="crm-av">{l.init}</span>
+                <div><b>{l.name}</b><time>{l.time}</time></div>
+                {l.unread>0&&<em className="crm-badge">{l.unread}</em>}
+              </div>
+              <p className="crm-card-msg">{l.msg}</p>
+              <div className="crm-card-ft">
+                {l.ch.map(c=><span key={c} className={`crm-tag ${chColor[c]??""}`}>{c}</span>)}
+                <strong className="crm-card-val">{l.val}</strong>
+              </div>
+            </div>
+          ))}
+          <button type="button" className="crm-col-add"><Plus/> Adicionar</button>
         </div>
-        <div className="crm-body">
-          {msgs.map((m,i)=><div key={i} className={`crm-msg crm-${m.from}`}><p>{m.text}</p><small>{m.time}{m.from==="me"&&" ✓✓"}</small></div>)}
+      ))}
+    </div>
+    <div className="crm-summary">
+      <Panel><PanelHead title="Por vendedor" meta="Out 2026"/>
+        <div className="table-wrap"><table className="data-table"><thead><tr><th>Vendedor</th><th>Leads</th><th>Propostas</th><th>Fechados</th><th>Conversão</th></tr></thead><tbody>
+          {[{n:"Marcelo M.",l:8,p:5,f:3,c:"38%"},{n:"Laura M.",l:6,p:3,f:2,c:"33%"},{n:"Rafael L.",l:4,p:2,f:1,c:"25%"},{n:"Carlos A.",l:5,p:2,f:1,c:"20%"}].map(v=><tr key={v.n}><td><b>{v.n}</b></td><td>{v.l}</td><td>{v.p}</td><td><b>{v.f}</b></td><td><Status tone="success">{v.c}</Status></td></tr>)}
+        </tbody></table></div>
+      </Panel>
+      <Panel><PanelHead title="Atividades recentes"/>
+        <div className="crm-acts">
+          {[{t:"Ricardo Nogueira respondeu à mensagem",d:"há 8 min"},{t:"Grupo Oliva confirmou visita técnica",d:"há 42 min"},{t:"Proposta enviada para Paulo Ribeiro",d:"há 2h"},{t:"Andrea Rocha avançou para Negociação",d:"há 4h"},{t:"João Silva convertido em projeto",d:"Ontem"}].map(a=><div className="crm-act" key={a.t}><i/><span>{a.t}</span><small>{a.d}</small></div>)}
         </div>
-        <div className="crm-input"><input placeholder="Mensagem..."/><Button size="icon"><ArrowRight/></Button></div>
-      </div>
+      </Panel>
+      <Panel><PanelHead title="Próximas ações"/>
+        <div className="crm-acts">
+          {[{t:"Follow-up Ricardo Nogueira",d:"Hoje · 16:00"},{t:"Reunião Grupo Oliva na sede",d:"Amanhã · 14:00"},{t:"Enviar revisão de proposta Paulo R.",d:"27 out"},{t:"Visita técnica Andrea Rocha",d:"29 out"},{t:"Ligar para Grupo Salves",d:"30 out"}].map(a=><div className="crm-act crm-act-cal" key={a.t}><CalendarDays/><span>{a.t}</span><small>{a.d}</small></div>)}
+        </div>
+      </Panel>
     </div>
   </AppShell>
 }
