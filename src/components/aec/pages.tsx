@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { AlertTriangle, ArrowRight, Box, CalendarDays, Check, ChevronRight, CircleDollarSign, Clock3, Download, FileText, Filter, GitBranch, GripVertical, Headphones, ListFilter, LogOut, MessageSquareText, PackageCheck, Plus, Settings2, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, UserPlus, UsersRound, Wrench } from "lucide-react";
+import { AlertTriangle, ArrowRight, Box, CalendarDays, Check, ChevronRight, CircleDollarSign, Clock3, Download, FileText, Filter, GitBranch, GripVertical, Headphones, ListFilter, LogOut, MessageSquareText, PackageCheck, Plus, Search, Settings2, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, UserPlus, UsersRound, Wrench } from "lucide-react";
 import { AppShell } from "./app-shell";
 import { AvatarStack, Metric, Panel, PanelHead, Progress, SectionTabs, Status } from "./ui";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,53 @@ export function LeadsPage(){return <AppShell eyebrow="CRM" title="Leads" action=
 function Filters(){return <div className="filters"><button className="filter-pill"><ListFilter/>Todos os registros</button><button className="filter-pill"><Filter/>Responsável</button><button className="filter-pill">Tipo de projeto</button><button className="filter-pill">Período</button></div>}
 
 const stages: PipelineStage[]=[{name:"Qualificação",value:"R$ 486 mil",opportunities:[{...leads[0],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:3},{...leads[4],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:3}]},{name:"Visita técnica",value:"R$ 372 mil",opportunities:[{...leads[3],description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:4}]},{name:"Proposta",value:"R$ 574 mil",opportunities:[{...leads[1],description:"Sala de cinema dedicada",ownerInitials:"MM",daysInStage:5},{...leads[2],description:"Automação residencial completa",ownerInitials:"MM",daysInStage:5}]},{name:"Negociação",value:"R$ 298 mil",opportunities:[{...leads[0],name:"Casa Gávea",value:"R$ 298.000",description:"Sala de cinema dedicada",ownerInitials:"LM",daysInStage:6}]}];
-export function PipelinePage(){return <AppShell eyebrow="CRM · Oportunidades" title="Pipeline comercial" action={<Button><Plus/><span> Nova oportunidade</span></Button>}><div className="pipeline-toolbar"><Filters/><div className="pipeline-total"><span>Pipeline total</span><b>R$ 1.730.000</b></div></div><KanbanBoard stages={stages}/></AppShell>}
+export function PipelinePage(){return <AppShell eyebrow="CRM · Oportunidades" title="Pipeline comercial" action={<Button><Plus/><span> Nova oportunidade</span></Button>}><div className="pipeline-crm-note"><MessageSquareText/><span>Leads convertidos no <Link to="/crm">CRM</Link> aparecem aqui como oportunidades de venda</span></div><div className="pipeline-toolbar"><Filters/><div className="pipeline-total"><span>Pipeline total</span><b>R$ 1.730.000</b></div></div><KanbanBoard stages={stages}/></AppShell>}
+
+const crmContacts=[
+  {id:1,initials:"RN",name:"Ricardo Nogueira",project:"Private Cinema",value:"R$ 320.000",status:"Qualificado",tone:"dark",lastMsg:"Pode ser quinta-feira à tarde?",time:"14:22",unread:2},
+  {id:2,initials:"MK",name:"Studio MK27",project:"Automação",value:"R$ 185.000",status:"Novo",tone:"neutral",lastMsg:"Você pode enviar o portfólio de projetos?",time:"Ontem",unread:0},
+  {id:3,initials:"BD",name:"Beatriz Dantas",project:"Áudio & Vídeo",value:"R$ 74.000",status:"Contato",tone:"neutral",lastMsg:"Obrigada! Vou pensar e retorno semana que vem.",time:"Ter",unread:1},
+  {id:4,initials:"GO",name:"Grupo Oliva",project:"Corporativo",value:"R$ 240.000",status:"Visita",tone:"warning",lastMsg:"Confirmado para amanhã às 14h na sede.",time:"Seg",unread:0},
+  {id:5,initials:"ES",name:"Eduardo Salles",project:"Residencial",value:"R$ 138.500",status:"Qualificado",tone:"dark",lastMsg:"Adorei a proposta, quando posso ver o showroom?",time:"Sex",unread:0},
+];
+const crmMsgs:{[k:number]:{from:"me"|"them";text:string;time:string}[]}={
+  1:[{from:"them",text:"Olá Marcelo! Vi o trabalho de vocês no Instagram. Ficou incrível aquele cinema residencial da Granja Viana.",time:"14:18"},{from:"them",text:"Tenho interesse em fazer algo parecido aqui na minha casa em Alphaville.",time:"14:19"},{from:"me",text:"Boa tarde Ricardo! Que bacana, fico feliz! Seria uma sala dedicada ou integrada à área de estar?",time:"14:20"},{from:"them",text:"Sala dedicada. Tenho 40m² disponíveis no subsolo, já separados para isso.",time:"14:21"},{from:"me",text:"Perfeito para um Private Cinema de alto padrão. Posso marcar uma visita técnica essa semana para avaliar o espaço?",time:"14:21"},{from:"them",text:"Pode ser quinta-feira à tarde?",time:"14:22"}],
+  2:[{from:"them",text:"Olá! Vi que vocês fazem automação residencial completa. Temos um escritório de arquitetura e queremos automatizar a sede.",time:"10:30"},{from:"me",text:"Bom dia! Sim, trabalhamos com automação corporativa e residencial. Qual é a metragem e quais sistemas vocês gostariam de integrar?",time:"10:45"},{from:"them",text:"800m² em 3 andares. Iluminação cênica, áudio ambiente, climatização e controle de acesso.",time:"11:02"},{from:"me",text:"Ótimo projeto! Trabalhamos com Control4 e Crestron. Você pode enviar o portfólio de projetos?",time:"11:10"}],
+  3:[{from:"them",text:"Oi! Vi vocês no evento Casa Cor. Quero um sistema de áudio para a área gourmet e varanda.",time:"09:15"},{from:"me",text:"Olá Beatriz! Que ótimo ter te encontrado lá. O espaço é coberto? Pretende integrar com outros ambientes?",time:"09:22"},{from:"them",text:"É coberta, cerca de 80m². Quero algo discreto, onde os caixas não apareçam muito.",time:"09:35"},{from:"me",text:"Temos soluções perfeitas — Bowers & Wilkins flush mount, praticamente invisíveis, som incrível. Envio referências!",time:"09:41"},{from:"them",text:"Obrigada! Vou pensar e retorno semana que vem.",time:"09:50"}],
+  4:[{from:"them",text:"Bom dia. Somos o Grupo Oliva, estamos reformando nossa sede e queremos um sistema completo de AV para sala de reuniões e auditório.",time:"08:45"},{from:"me",text:"Bom dia! Seria um prazer. Qual é a capacidade do auditório e das salas de reunião?",time:"09:00"},{from:"them",text:"Auditório para 120 pessoas e 4 salas de reunião entre 8 e 20 pessoas.",time:"09:12"},{from:"me",text:"Projeto robusto! Podemos fazer uma visita para levantamento técnico?",time:"09:18"},{from:"them",text:"Confirmado para amanhã às 14h na sede. Rua Funchal, 418.",time:"09:25"}],
+  5:[{from:"them",text:"Olá Marcelo, fui indicado pelo João Silva. Ele disse que o trabalho de vocês é impressionante.",time:"16:20"},{from:"me",text:"Olá Eduardo! O João é um cliente incrível, o projeto ficou lindo. O que você está pensando para sua casa?",time:"16:35"},{from:"them",text:"Home theater integrado com automação de iluminação e cortinas. Apartamento de 300m² no Itaim.",time:"16:42"},{from:"me",text:"Perfeito para uma solução Control4 integrada. Posso enviar uma proposta personalizada?",time:"16:48"},{from:"them",text:"Adorei a proposta, quando posso ver o showroom?",time:"16:55"}],
+};
+export function CrmChatPage(){
+  const [active,setActive]=useState(0);
+  const [mv,setMv]=useState<"list"|"chat">("list");
+  const c=crmContacts[active]!;
+  const msgs=crmMsgs[c.id]!;
+  return <AppShell eyebrow="CRM · Conversas" title="Mensagens" action={<Button variant="outline" asChild><Link to="/pipeline"><GitBranch/><span> Ver pipeline</span></Link></Button>}>
+    <div className={`crm-chat${mv==="chat"?" crm-mc":""}`}>
+      <div className="crm-list">
+        <div className="crm-search"><Search/><input placeholder="Buscar conversa..."/></div>
+        {crmContacts.map((ct,i)=><button type="button" key={ct.id} className={`crm-contact${i===active?" active":""}`} onClick={()=>{setActive(i);setMv("chat")}}>
+          <span className="crm-av">{ct.initials}</span>
+          <div><div className="crm-ct"><b>{ct.name}</b><small>{ct.time}</small></div>
+          <div className="crm-cb"><span>{ct.lastMsg}</span>{ct.unread>0&&<em>{ct.unread}</em>}</div></div>
+        </button>)}
+      </div>
+      <div className="crm-thread">
+        <div className="crm-th">
+          <button type="button" className="crm-back" onClick={()=>setMv("list")}><ChevronRight style={{transform:"rotate(180deg)"}}/></button>
+          <span className="crm-av">{c.initials}</span>
+          <div><b>{c.name}</b><small>{c.project} · {c.value}</small></div>
+          <Status tone={c.tone as "dark"|"warning"|"success"|"neutral"}>{c.status}</Status>
+          <Button size="sm" asChild><Link to="/venda-ganha"><Check/><span> Converter</span></Link></Button>
+        </div>
+        <div className="crm-body">
+          {msgs.map((m,i)=><div key={i} className={`crm-msg crm-${m.from}`}><p>{m.text}</p><small>{m.time}{m.from==="me"&&" ✓✓"}</small></div>)}
+        </div>
+        <div className="crm-input"><input placeholder="Mensagem..."/><Button size="icon"><ArrowRight/></Button></div>
+      </div>
+    </div>
+  </AppShell>
+}
 
 export function ClientsPage(){return <AppShell eyebrow="CRM" title="Clientes" action={buttonAction}><Filters/><div className="client-grid">{[{n:"João Silva",p:"Casa João Silva",v:"R$ 280 mil",s:"Projeto ativo"},{n:"Fernanda Almeida",p:"Residência Almeida",v:"R$ 194 mil",s:"Em instalação"},{n:"Grupo Arcos",p:"Sede Arcos",v:"R$ 126 mil",s:"Projeto ativo"},{n:"Marina Costa",p:"Apartamento Itaim",v:"R$ 98 mil",s:"Pós-venda"}].map(c=><Panel key={c.n}><div className="client-head"><span>{c.n.split(" ").map(x=>x[0]).join("")}</span><Status>{c.s}</Status></div><h2>{c.n}</h2><p>{c.p}</p><div className="client-meta"><div><small>Relacionamento</small><b>Desde 2024</b></div><div><small>Contratos</small><b>{c.v}</b></div></div><Button variant="outline" className="w-full" asChild><Link to="/cliente">Abrir cliente <ArrowRight/></Link></Button></Panel>)}</div></AppShell>}
 export function ClientPage(){return <AppShell eyebrow="Clientes · Perfil" title="João Silva" action={<Button><Plus/><span> Novo projeto</span></Button>}><div className="profile-banner"><div className="profile-id">JS</div><div><h2>João Henrique Silva</h2><p>Cliente desde maio de 2024 · São Paulo, SP</p></div><Status tone="success">Cliente ativo</Status></div><SectionTabs items={["Visão geral","Projetos","Oportunidades","Documentos","Histórico"]} active="Visão geral"/><div className="detail-grid"><Panel><PanelHead title="Informações de contato"/><div className="info-grid"><Info label="E-mail" value="joao@silva.com.br"/><Info label="Telefone" value="+55 11 99880-4512"/><Info label="Responsável" value="Marcelo Martins"/><Info label="Origem" value="Indicação"/></div></Panel><Panel><PanelHead title="Relacionamento"/><div className="big-stat"><span>Valor total contratado</span><strong>R$ 428.000</strong><small>2 projetos · 1 oportunidade</small></div></Panel><Panel className="span-2"><PanelHead title="Projetos do cliente"/><ProjectTable/></Panel></div></AppShell>}

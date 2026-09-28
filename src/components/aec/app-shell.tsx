@@ -8,7 +8,7 @@ import { CommandPalette } from "./command-palette";
 
 const navItems = [
   { to: "/", label: "Início", icon: Home },
-  { to: "/pipeline", label: "CRM", icon: ContactRound },
+  { to: "/crm", label: "CRM", icon: ContactRound },
   { to: "/projeto", label: "Projetos", icon: BriefcaseBusiness },
   { to: "/ordens-servico", label: "Operação", icon: Settings2 },
   { to: "/estoque", label: "Estoque", icon: Boxes },
@@ -37,7 +37,7 @@ export function AppShell({ children, title, eyebrow, action }: { children: React
        <header className="topbar"><Button className="desktop-hidden" variant="ghost" size="icon" aria-label="Abrir menu" onClick={() => setOpen(true)}><Menu /></Button><button className="search-box" type="button" onClick={()=>setSearchOpen(true)}><Search/><span>Buscar projeto, cliente, equipamento...</span><kbd>⌘ K</kbd></button><div className="top-actions"><ThemeToggle/><Button variant="outline" size="icon" aria-label="Notificações"><Bell/><i /></Button><Link to="/usuarios" className="avatar" aria-label="Abrir perfil">MM</Link></div></header>
       <div className="page-wrap"><div className="page-heading"><div>{eyebrow && <p>{eyebrow}</p>}<h1>{title}</h1></div>{action}</div>{children}</div>
     </main>
-    <nav className="bottom-nav" aria-label="Navegação principal"><Link to="/" className={pathname==="/"?"active":""}><Home/><span>Home</span></Link><Link to="/pipeline" className={pathname.startsWith("/pipeline")?"active":""}><ContactRound/><span>CRM</span></Link><Link to="/projeto" className={pathname.startsWith("/projeto")?"active":""}><BriefcaseBusiness/><span>Projetos</span></Link><Link to="/agenda" className={pathname.startsWith("/agenda")?"active":""}><CalendarDays/><span>Agenda</span></Link><Button variant="ghost" type="button" onClick={() => setOpen(true)}><Menu/><span>Mais</span></Button></nav>
+    <nav className="bottom-nav" aria-label="Navegação principal"><Link to="/" className={pathname==="/"?"active":""}><Home/><span>Home</span></Link><Link to="/crm" className={pathname.startsWith("/crm")?"active":""}><ContactRound/><span>CRM</span></Link><Link to="/projeto" className={pathname.startsWith("/projeto")?"active":""}><BriefcaseBusiness/><span>Projetos</span></Link><Link to="/agenda" className={pathname.startsWith("/agenda")?"active":""}><CalendarDays/><span>Agenda</span></Link><Button variant="ghost" type="button" onClick={() => setOpen(true)}><Menu/><span>Mais</span></Button></nav>
     <CommandPalette open={searchOpen} onClose={()=>setSearchOpen(false)}/>
   </div>;
 }
